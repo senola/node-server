@@ -1,0 +1,27 @@
+{
+  "name": "node-server",
+  "version": "1.0.0",
+  "description": "node-server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/senola/node-server.git"
+  },
+  "keywords": [
+    "node-server",
+    "senola"
+  ],
+  "author": "senola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/senola/node-server/issues"
+  },
+  "homepage": "https://github.com/senola/node-server#readme",
+  "dependencies": {
+    "express": "^4.14.1"
+  }
+}

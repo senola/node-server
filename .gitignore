@@ -1,0 +1,12 @@
+/target
+.idea
+*.iml
+/out
+.project
+.classpath
+/bin
+/logs
+/.externalToolBuilders
+/.settings
+*.tmp
+/node_modules
