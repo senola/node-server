@@ -1,30 +1,67 @@
-var express = require("express");
-var path = require('path');
-var index = require('./server/routes/index');
+var express = require("express"),
+    bodyParser = require("body-parser"), //请求body解析中间件
+    morgan = require('morgan'), // HTTP请求日志中间件
+    cookieParser = require('cookie-parser'), //cookie解析中间件
+    flash = require("connect-flash"), //The flash is a special area of the session used for storing messages
+    passport = require("./server/passport/passport"); // passport
+
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'servers/views'));
-app.set('view engine', 'jade');
+// Use application-level middleware for common functionality, including
+// logging, parsing, and session handling.
+app.use(morgan('combined'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
-app.use('/', index);
+app.get('/login', passport.authenticate('local', {
+    successRedirect: '/success',
+    failureRedirect: '/error',
+    session: true,
+    failureFlash: false
+    // successFlash: 'Welcome!',
+    // failureFlash: 'Invalid username or password.'
+}));
 
-// 捕获且往下传递404错误
+app.get('/success', function (req, res) {
+  res.send('login success!!')
+});
+app.get('/error', function (req, res) {
+  res.send('Invalid username or password.')
+})
+
+// 捕获404错误
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
-// 错误处理
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// error handlers
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
 module.exports = app;
