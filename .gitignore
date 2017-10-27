@@ -4,8 +4,6 @@
 /out
 .project
 .classpath
-/bin
-/logs
 /.externalToolBuilders
 /.settings
 *.tmp

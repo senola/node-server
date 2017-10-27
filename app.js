@@ -2,8 +2,7 @@ var express = require("express"),
     bodyParser = require("body-parser"), //请求body解析中间件
     morgan = require('morgan'), // HTTP请求日志中间件
     cookieParser = require('cookie-parser'), //cookie解析中间件
-    flash = require("connect-flash"), //The flash is a special area of the session used for storing messages
-    passport = require("./server/passport/passport"); // passport
+    flash = require("connect-flash"); //The flash is a special area of the session used for storing messages
 
 var app = express();
 
@@ -13,18 +12,18 @@ app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 app.use(flash());
 
-app.get('/login', passport.authenticate('local', {
-    successRedirect: '/success',
-    failureRedirect: '/error',
-    session: true,
-    failureFlash: false
-    // successFlash: 'Welcome!',
-    // failureFlash: 'Invalid username or password.'
-}));
+// app.get('/login', passport.authenticate('local', {
+//     successRedirect: '/success',
+//     failureRedirect: '/error',
+//     session: true,
+//     failureFlash: false
+//     // successFlash: 'Welcome!',
+//     // failureFlash: 'Invalid username or password.'
+// }));
 
 app.get('/success', function (req, res) {
   res.send('login success!!')
