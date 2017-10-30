@@ -2,26 +2,14 @@
   "name": "node-server",
   "version": "1.0.0",
   "description": "node-server",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "DEBUG=debug:* node ./bin/www",
+    "dev": "node app.js",
     "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/senola/node-server.git"
-  },
-  "keywords": [
-    "node-server",
-    "senola"
-  ],
   "author": "senola",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/senola/node-server/issues"
-  },
-  "homepage": "https://github.com/senola/node-server#readme",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.16.0",
     "connect-flash": "^0.1.1",
@@ -36,5 +24,11 @@
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
     "restify": "^4.3.0"
+  },
+  "devDependencies": {
+    "colors": "^1.1.2",
+    "cross-env": "^5.1.1",
+    "moment": "^2.19.1",
+    "winston": "^3.0.0-rc1"
   }
 }

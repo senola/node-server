@@ -1,66 +1,43 @@
+/**
+ * node-server
+ */
+const config = require('./config/config.default');
+
+
 var express = require("express"),
     bodyParser = require("body-parser"), //请求body解析中间件
     morgan = require('morgan'), // HTTP请求日志中间件
     cookieParser = require('cookie-parser'), //cookie解析中间件
     flash = require("connect-flash"); //The flash is a special area of the session used for storing messages
-
+var colors = require('colors');
 var app = express();
 
-// Use application-level middleware for common functionality, including
-// logging, parsing, and session handling.
-app.use(morgan('combined'));
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-//app.use(passport.initialize());
-//app.use(passport.session());
-app.use(flash());
+// console.log('hello'.green); // outputs green text
+// console.log('i like cake and pies'.underline.red) // outputs red underlined text
+// console.log('inverse the color'.inverse); // inverses the color
+// console.log('OMG Rainbows!'.rainbow); // rainbow
+// console.log('Run the trap'.trap); // Drops the bass
+// console.log(config.host.inverse.bgGreen); // Drops the bass
 
-// app.get('/login', passport.authenticate('local', {
-//     successRedirect: '/success',
-//     failureRedirect: '/error',
-//     session: true,
-//     failureFlash: false
-//     // successFlash: 'Welcome!',
-//     // failureFlash: 'Invalid username or password.'
-// }));
 
-app.get('/success', function (req, res) {
-  res.send('login success!!')
-});
-app.get('/error', function (req, res) {
-  res.send('Invalid username or password.')
-})
+const logger = require('./common/logger');
 
-// 捕获404错误
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+// logger.debug('test message %s, %s', 'first', 'second',{ number: 123 });
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
 
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
-});
 
 module.exports = app;
