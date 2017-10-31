@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node app.js",
     "start": "node ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./test/**/*.js"
   },
   "author": "senola",
   "license": "MIT",
@@ -28,7 +28,11 @@
   "devDependencies": {
     "colors": "^1.1.2",
     "cross-env": "^5.1.1",
+    "lodash": "^4.17.4",
+    "mocha": "^4.0.1",
     "moment": "^2.19.1",
+    "should": "^13.1.3",
+    "unidecode": "^0.1.8",
     "winston": "^3.0.0-rc1"
   }
 }

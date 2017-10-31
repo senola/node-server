@@ -1,7 +1,7 @@
 /**
  * node-server
  */
-const config = require('./config/config.default');
+const config = require('./config.default');
 
 
 var express = require("express"),
@@ -20,24 +20,13 @@ var app = express();
 // console.log(config.host.inverse.bgGreen); // Drops the bass
 
 
-const logger = require('./common/logger');
+const logger = require('./utils/logger');
 
 // logger.debug('test message %s, %s', 'first', 'second',{ number: 123 });
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
-logger.error("服务器异常, 服务器名称: %s, id: %s", "127.0.0.1", "1254", {number: 123});
+logger.warn("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
+logger.warn("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
+logger.warn("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
 
+logger.data("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
 
 module.exports = app;

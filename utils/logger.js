@@ -12,9 +12,9 @@
 
 const path = require('path');
 const moment = require('moment');
-const config = require('../config/config.default'); // 配置
+const config = require('../config.default'); // 配置
 const { createLogger, format, transports } = require('winston'); // A logger for just about everything
-const { combine, timestamp, label, printf, prettyPrint } = format;
+const { combine, printf } = format;
 /**
  *  默认配置（级别对应的颜色）
  */
@@ -36,14 +36,14 @@ const winston_config = {
         verbose:  'cyan',
         silly:    'magenta'
     },
+    // 格式化输出内容，如：
+    //      时间             level           content
+    // [2017-10-30 19:25:51] [error]: This is an information message.
     log_format: printf(info => {
-        // 格式化输出内容，如：
-        //       时间             level           content
-        // [2017-10-30 19:25:51] [error]: This is an information message.
         const message = info[Object.getOwnPropertySymbols(info)[1]]; //此处用点坑，只能用getOwnPropertySymbols() API获取symbols
         return `[${moment(info.timestamp).format('YYYY-MM-DD HH:mm:ss')}] ${message} ${info.label === undefined ? '' : info.label}`;
     }),
-    error_file_name: path.join(config.error_log_dir + "/" + moment().format('YYYY-MM-DD') + ".log")
+    error_file_name: path.join(config.error_log_dir + "/" + moment().format('YYYY-MM-DD') + ".log") // 日志文件绝对路径
 };
 
 /**
@@ -52,7 +52,7 @@ const winston_config = {
 const logger = createLogger({
     levels: winston_config.levels,
     format: combine(
-        //format.colorize({all: true}), // all: ture 内容的颜色也变换 暂时关闭颜色，会导致log文件可读性差
+        format.colorize({all: true}), // all: ture 内容的颜色也变换
         format.json(),
         format.splat(),
         format.simple(),
@@ -62,7 +62,6 @@ const logger = createLogger({
         new transports.Console(),
         new transports.File({
             filename: winston_config.error_file_name,
-            level: 'error',
             colorize: false
         })
     ],
