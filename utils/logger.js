@@ -13,58 +13,66 @@
 const path = require('path');
 const moment = require('moment');
 const config = require('../config.default'); // 配置
-const { createLogger, format, transports } = require('winston'); // A logger for just about everything
-const { combine, printf } = format;
+const {createLogger, format, transports} = require('winston'); // A logger for just about everything
+const {combine, printf} = format;
+
 /**
  *  默认配置（级别对应的颜色）
  */
-const winston_config = {
+const winstonConfig = {
     levels: {
-        error:     0,  // error
-        debug:     1,  // debug
-        warn:      2,  // warn
-        data:      3,  // data
-        info:      4,  // info
-        verbose:   5,  // verbose
-        silly:     6   // silly
+        error: 0, // error
+        debug: 1, // debug
+        warn: 2, // warn
+        data: 3, // data
+        info: 4, // info
+        verbose: 5, // verbose
+        silly: 6 // silly
     },
     colors: {
-        debug:    'blue',
-        warn:     'yellow',
-        data:     'grey',
-        info:     'green',
-        verbose:  'cyan',
-        silly:    'magenta'
+        debug: 'blue',
+        warn: 'yellow',
+        data: 'grey',
+        info: 'green',
+        verbose: 'cyan',
+        silly: 'magenta'
     },
     // 格式化输出内容，如：
     //      时间             level           content
     // [2017-10-30 19:25:51] [error]: This is an information message.
-    log_format: printf(info => {
-        const message = info[Object.getOwnPropertySymbols(info)[1]]; //此处用点坑，只能用getOwnPropertySymbols() API获取symbols
+    logFormat: printf(info=> {
+        const message = info[Object.getOwnPropertySymbols(info)[1]]; // 此处用点坑，只能用getOwnPropertySymbols() API获取symbols
+
         return `[${moment(info.timestamp).format('YYYY-MM-DD HH:mm:ss')}] ${message} ${info.label === undefined ? '' : info.label}`;
     }),
-    error_file_name: path.join(config.error_log_dir + "/" + moment().format('YYYY-MM-DD') + ".log") // 日志文件绝对路径
+    errorFileName: path.join(config.errorLogDir + '/' + moment().format('YYYY-MM-DD') + '.log') // 日志文件绝对路径
 };
 
 /**
  * 创建logger实例
  */
 const logger = createLogger({
-    levels: winston_config.levels,
+    levels: winstonConfig.levels,
     format: combine(
         format.colorize({all: true}), // all: ture 内容的颜色也变换
         format.json(),
         format.splat(),
         format.simple(),
-        winston_config.log_format
+        winstonConfig.logFormat
     ),
     transports: [
         new transports.Console(),
         new transports.File({
-            filename: winston_config.error_file_name,
+            level: 'error',
+            filename: winstonConfig.errorFileName,
+            colorize: false
+        }),
+        new transports.File({
+            level: 'warn',
+            filename: winstonConfig.errorFileName,
             colorize: false
         })
-    ],
+    ]
 });
 
 module.exports = logger;

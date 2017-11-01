@@ -6,7 +6,7 @@
  * @param max
  * @returns {number}
  */
-module.exports = function (min, max) {
+module.exports = function(min, max) {
     if (max === undefined) {
         max = min;
         min = 0;

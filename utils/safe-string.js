@@ -1,5 +1,5 @@
-const unidecode  = require('unidecode'),
-      __         = require('lodash');
+const unidecode = require('unidecode'),
+    __ = require('lodash');
 
 module.exports = function(string, options) {
     options = options || {};
@@ -12,8 +12,8 @@ module.exports = function(string, options) {
 
     // 删除 URL 保留字符: `@:/?#[]!$&()*+,;=` as well as `\%<>|^~£"{}` and \`
     string = string.replace(/(\s|\.|@|:|\/|\?|#|\[|\]|!|\$|&|\(|\)|\*|\+|,|;|=|\\|%|<|>|\||\^|~|"|\{|\}|`|–|—)/g, '-')
-                   .replace(/'/g, '') //删除 “'”
-                   .toLowerCase(); // 转换为小写字符
+        .replace(/'/g, '') // 删除 “'”
+        .toLowerCase(); // 转换为小写字符
     // We do not need to make the following changes when importing data
     if (!__.has(options, 'importing') || !options.importing) {
         // Convert 2 or more dashes into a single dash
@@ -23,7 +23,7 @@ module.exports = function(string, options) {
             // Remove any dashes at the beginning
             .replace(/^-/, '');
     }
-    //去掉空白字符
+    // 去掉空白字符
     string = string.trim();
     return string;
 };

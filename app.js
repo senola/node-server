@@ -4,29 +4,22 @@
 const config = require('./config.default');
 
 
-var express = require("express"),
-    bodyParser = require("body-parser"), //请求body解析中间件
-    morgan = require('morgan'), // HTTP请求日志中间件
-    cookieParser = require('cookie-parser'), //cookie解析中间件
-    flash = require("connect-flash"); //The flash is a special area of the session used for storing messages
-var colors = require('colors');
-var app = express();
-
-// console.log('hello'.green); // outputs green text
-// console.log('i like cake and pies'.underline.red) // outputs red underlined text
-// console.log('inverse the color'.inverse); // inverses the color
-// console.log('OMG Rainbows!'.rainbow); // rainbow
-// console.log('Run the trap'.trap); // Drops the bass
-// console.log(config.host.inverse.bgGreen); // Drops the bass
-
-
+const express = require('express');
+// bodyParser = require('body-parser'), // 请求body解析中间件
+// morgan = require('morgan'), // HTTP请求日志中间件
+// cookieParser = require('cookie-parser'), //cookie解析中间件
+// flash = require("connect-flash"); // The flash is a special area of the session used for storing messages
 const logger = require('./utils/logger');
+const app = express();
 
-// logger.debug('test message %s, %s', 'first', 'second',{ number: 123 });
-logger.warn("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
-logger.warn("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
-logger.warn("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
+app.get('/', (req, res)=> {
+    res.send('我是首页');
+});
 
-logger.data("服务器异常, 服务器名称: %s, id: %d", "127.0.0.1", "1254", {number: 123});
+app.get('/about', (req, res)=> {
+    res.send('关于');
+});
 
-module.exports = app;
+app.listen(config.port, ()=> {
+    logger.warn('sever was listen on %s ...', config.port);
+});
