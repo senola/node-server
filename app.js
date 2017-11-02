@@ -2,24 +2,44 @@
  * node-server
  */
 const config = require('./config.default');
-
-
 const express = require('express');
-// bodyParser = require('body-parser'), // 请求body解析中间件
-// morgan = require('morgan'), // HTTP请求日志中间件
-// cookieParser = require('cookie-parser'), //cookie解析中间件
-// flash = require("connect-flash"); // The flash is a special area of the session used for storing messages
+const path = require('path');
+const bodyParser = require('body-parser'); // 请求body解析中间件
+const cookieParser = require('cookie-parser'); // cookie解析中间件
+const session = require('express-session'); // session
+const router = require('./router/router');
+const requestLog = require('./middleware/request-log'); // cookie解析中间件
 const logger = require('./utils/logger');
 const app = express();
 
-app.get('/', (req, res)=> {
-    res.send('我是首页');
-});
+app.use(cookieParser(config.cookieSecrect));
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: true, limit: '1mb'}));
+// parse application/json
+app.use(bodyParser.json({limit: '1mb'}));
 
-app.get('/about', (req, res)=> {
-    res.send('关于');
-});
+// Request 日志。请求时间
+app.use(requestLog);
 
-app.listen(config.port, ()=> {
-    logger.warn('sever was listen on %s ...', config.port);
+// 静态资源文件
+const staticDir = path.join(__dirname, 'static');
+app.use('/static', express.static(staticDir));
+
+
+app.set('trust proxy', 1); // trust first proxy
+app.use(session({
+    secret: config.cookieSecrect,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false, // 如果不是https，设置true 服务不能获取cookie
+        maxAge: 60000
+    }
+}));
+
+app.use('/', router); // router
+
+// 默认是IPv6 address (::) 需要ip4的话，需要加上 "0.0.0.0"
+app.listen(config.port, '0.0.0.0', ()=> {
+    logger.info('please visit http://%s:%s in the browser', config.host, config.port);
 });
