@@ -35,6 +35,7 @@
     "mocha": "^4.0.1",
     "moment": "^2.19.1",
     "should": "^13.1.3",
+    "sqlite3": "^3.1.13",
     "unidecode": "^0.1.8",
     "winston": "^3.0.0-rc1"
   }
