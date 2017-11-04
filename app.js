@@ -4,6 +4,7 @@
 const config = require('./config.default');
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const bodyParser = require('body-parser'); // 请求body解析中间件
 const cookieParser = require('cookie-parser'); // cookie解析中间件
 const session = require('express-session'); // session
@@ -25,27 +26,37 @@ app.use(requestLog);
 const staticDir = path.join(__dirname, 'static');
 app.use('/static', express.static(staticDir));
 
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database(':memory:');
 
-db.serialize(()=> {
-    db.run('CREATE TABLE lorem (info TEXT)');
+// 环境健康检查
+require('./utils/startup-check').check();
 
-    let stmt = db.prepare('INSERT INTO lorem VALUES (?)');
-    for (let i = 0; i < 10; i++) {
-        stmt.run('Ipsum ' + i);
-    }
-    stmt.finalize();
-
-    db.each('SELECT rowid AS id, info FROM lorem', (err, row)=> {
-        logger.info(row.id + ': ' + row.info);
-    });
-});
-
-db.close();
+const sqlite3 = require('sqlite3').verbose(); // verbose 开启sqlit3的debug模式
+// const file = config.development.databasedbDir + "/test.db";
+//
+// if(!fs.existsSync(file)) {
+//     logger.data('create db file. %s', file);
+//     fs.openSync(file, 'w+');
+// }
+// // const db = new sqlite3.Database(':memory:');
+// const db = new sqlite3.Database(file);
+//
+// db.serialize(()=> {
+//     // db.run('CREATE TABLE lorem (info TEXT)');
+//     //
+//     // let stmt = db.prepare('INSERT INTO lorem VALUES (?)');
+//     // for (let i = 0; i < 10; i++) {
+//     //     stmt.run('Ipsum ' + i);
+//     // }
+//     // stmt.finalize();
+//
+//     db.each('SELECT rowid AS id, info FROM lorem', (err, row)=> {
+//         logger.info(row.id + ': ' + row.info);
+//     });
+// });
+//db.close();
 app.set('trust proxy', 1); // trust first proxy
 app.use(session({
-    secret: config.cookieSecrect,
+    secret: config.development.cookieSecrect,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -58,5 +69,5 @@ app.use('/', router); // router
 
 // 默认是IPv6 address (::) 需要ip4的话，需要加上 "0.0.0.0"
 app.listen(config.port, '0.0.0.0', ()=> {
-    logger.info('please visit http://%s:%s in the browser', config.host, config.port);
+    logger.warn('please visit http://%s:%s in the browser', config.host, config.port);
 });
