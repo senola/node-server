@@ -1,4 +1,4 @@
-const randomFloat = require('../../utils/random-float');
+const randomFloat = require('../../server/utils/random-float');
 const should = require('should');
 
 describe('utils/random-float', ()=> {

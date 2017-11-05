@@ -1,4 +1,4 @@
-const safeString = require('../../utils/safe-string');
+const safeString = require('../../server/utils/safe-string');
 const should = require('should');
 
 describe('utils/safe-string', ()=> {

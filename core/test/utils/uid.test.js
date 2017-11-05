@@ -1,4 +1,4 @@
-const uid = require('../../utils/uid');
+const uid = require('../../server/utils/uid');
 const should = require('should');
 
 describe('utils/uid', ()=> {

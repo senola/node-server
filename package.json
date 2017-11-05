@@ -4,9 +4,9 @@
   "description": "node-server",
   "main": "app.js",
   "scripts": {
-    "dev": "node app.js",
-    "start": "node ./bin/www",
-    "test": "mocha ./test/**/*.js",
+    "dev": "cross-env NODE_ENV=development node app.js",
+    "pro": "cross-env NODE_ENV=production node app.js",
+    "test": "mocha ./core/test/**/*.js",
     "lint": "eslint ."
   },
   "author": "senola",
@@ -24,11 +24,13 @@
     "debug": "^2.6.0",
     "express": "^4.14.1",
     "express-session": "^1.15.0",
+    "knex": "^0.13.0",
     "lodash": "^4.17.4",
     "method-override": "^2.3.7",
     "moment": "^2.19.1",
     "mongoose": "^4.8.1",
     "morgan": "^1.8.0",
+    "nconf": "^0.9.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
@@ -40,7 +42,6 @@
   },
   "devDependencies": {
     "eslint": "^4.10.0",
-    "express-session": "^1.15.6",
     "mocha": "^4.0.1",
     "should": "^13.1.3"
   }

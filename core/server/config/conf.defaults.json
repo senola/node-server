@@ -1,0 +1,14 @@
+{
+  "url": "http://localhost:9991",
+  "server": {
+    "host": "127.0.0.1",
+    "port": 9991
+  },
+  "paths": {
+    "contentPath": "content/"
+  },
+  "logging": {
+    "level": "info",
+    "transports": ["console"]
+  }
+}

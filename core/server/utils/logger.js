@@ -13,7 +13,7 @@
 const path = require('path');
 const moment = require('moment');
 const __ = require('lodash');
-const config = require('../config.default'); // 配置
+const config = require('../../../config.default'); // 配置
 const {createLogger, format, transports} = require('winston'); // A logger for just about everything
 const {combine, printf} = format;
 
@@ -44,7 +44,7 @@ const winstonConfig = {
     logFormat: printf(info=> {
         let message = info[Object.getOwnPropertySymbols(info)[1]]; // 此处用点坑，只能用getOwnPropertySymbols() API获取symbols
 
-        if(message !== undefined && __.endsWith(message, '{}')) {
+        if (message !== undefined && __.endsWith(message, '{}')) {
             message = message.substring(0, message.length - 2);
         }
         return `[${moment(info.timestamp).format('YYYY-MM-DD HH:mm:ss')}] ${message} ${info.label === undefined ? '' : info.label}`;

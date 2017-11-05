@@ -4,18 +4,20 @@
 const config = require('./config.default');
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const bodyParser = require('body-parser'); // 请求body解析中间件
 const cookieParser = require('cookie-parser'); // cookie解析中间件
 const session = require('express-session'); // session
-const router = require('./router/router');
-const requestLog = require('./middleware/request-log'); // cookie解析中间件
-const logger = require('./utils/logger');
+const router = require('./core/server/router/router');
+const requestLog = require('./core/server/middleware/request-log'); // cookie解析中间件
+const logger = require('./core/server/utils/logger');
 const app = express();
+
+require('./core/server')();
 
 app.use(cookieParser(config.cookieSecrect));
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: true, limit: '1mb'}));
+app.use(bodyParser.urlencoded({extended: true,
+    limit: '1mb'}));
 // parse application/json
 app.use(bodyParser.json({limit: '1mb'}));
 
@@ -24,11 +26,12 @@ app.use(requestLog);
 
 // 静态资源文件
 const staticDir = path.join(__dirname, 'static');
+
 app.use('/static', express.static(staticDir));
 
 
 // 环境健康检查
-require('./utils/startup-check').check();
+require('./core/server/utils/startup-check').check();
 
 const sqlite3 = require('sqlite3').verbose(); // verbose 开启sqlit3的debug模式
 // const file = config.development.databasedbDir + "/test.db";
@@ -53,7 +56,9 @@ const sqlite3 = require('sqlite3').verbose(); // verbose 开启sqlit3的debug模
 //         logger.info(row.id + ': ' + row.info);
 //     });
 // });
-//db.close();
+// db.close();
+
+
 app.set('trust proxy', 1); // trust first proxy
 app.use(session({
     secret: config.development.cookieSecrect,

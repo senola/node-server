@@ -1,0 +1,13 @@
+{
+  "url": "http://localhost:9991",
+  "database": {
+    "client": "sqlite3",
+    "connection": {
+      "filename": "content/data/ghost.db"
+    },
+    "debug": false
+  },
+  "paths": {
+    "contentPath": "content/"
+  }
+}

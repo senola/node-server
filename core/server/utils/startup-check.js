@@ -2,25 +2,25 @@
  * 程序启动环境检查
  * @time 2017-11-04
  */
-const packages = require('../package.json');
+const packages = require('../../../package.json');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
 const mode = process.env.NODE_ENV === undefined ? 'development' : process.env.NODE_ENV;
-const appRoot = path.resolve(__dirname, '../');
+const appRoot = path.resolve(__dirname, '../../../');
 const configFilePath = process.env.CONFIG || path.join(appRoot, 'config.default.js');
 const logger = require('./logger');
 
 
 const exitCodes = {
-        NODE_VERSION_UNSUPPORTED: 231, // node 版本不支持
-        NODE_ENV_CONFIG_MISSING: 232, // 默认配置文件丢失
-        DEPENDENCIES_MISSING: 233, // 依赖丢失
-        CONTENT_PATH_NOT_ACCESSIBLE: 234, // 目录不可访问
-        CONTENT_PATH_NOT_WRITABLE: 235, // 不可写
-        SQLITE_DB_NOT_WRITABLE: 236, // sqlite文件不可写
-        BUILT_FILES_DO_NOT_EXIST: 237
-      };
+    NODE_VERSION_UNSUPPORTED: 231, // node 版本不支持
+    NODE_ENV_CONFIG_MISSING: 232, // 默认配置文件丢失
+    DEPENDENCIES_MISSING: 233, // 依赖丢失
+    CONTENT_PATH_NOT_ACCESSIBLE: 234, // 目录不可访问
+    CONTENT_PATH_NOT_WRITABLE: 235, // 不可写
+    SQLITE_DB_NOT_WRITABLE: 236, // sqlite文件不可写
+    BUILT_FILES_DO_NOT_EXIST: 237
+};
 
 const checks = {
     check: function check() {
@@ -55,7 +55,6 @@ const checks = {
         logger.data('系统总内存：%sm 可用内存%sm', totalmem, freemem);
         logger.data('当前用户的home目录: %s', homedir);
         // logger.data(JSON.stringify(networkInterfaces));
-
     },
     // 确保node版本支持
     nodeVersion: function checkNodeVersion() {
@@ -64,7 +63,7 @@ const checks = {
 
         if (process.env.NODE_VERSION_CHECK !== 'false' && !semver.satisfies(process.versions.node, packages.engines.node)) {
             logger.error('Unsupported version of Node');
-            logger.error('this project needs Node version %s, you are using version %s', packages.engines.node,  process.versions.node);
+            logger.error('this project needs Node version %s, you are using version %s', packages.engines.node, process.versions.node);
             process.exit(exitCodes.NODE_VERSION_UNSUPPORTED);
         }
         logger.info('node 版本检测正常.');
@@ -94,7 +93,7 @@ const checks = {
 
         let errors = [];
 
-        Object.keys(packages.dependencies).forEach(function (p) {
+        Object.keys(packages.dependencies).forEach(p=> {
             try {
                 require.resolve(p);
             } catch (e) {
@@ -109,7 +108,7 @@ const checks = {
 
         errors = errors.join('\n  ');
 
-        logger.error('server is unable to start due to missing dependencies' );
+        logger.error('server is unable to start due to missing dependencies');
         logger.error(errors);
         logger.error('Please run `npm install --production` and try starting server again.');
         process.exit(exitCodes.DEPENDENCIES_MISSING);
@@ -158,7 +157,7 @@ const checks = {
             process.exit(exitCodes.SQLITE_DB_NOT_WRITABLE);
         }
         logger.info('sqlite数据库文件读写权限检测正常.');
-    },
+    }
 };
 
 module.exports = checks;

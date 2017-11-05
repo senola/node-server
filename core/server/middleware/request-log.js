@@ -8,7 +8,7 @@ const ignore = /^\/(public|agent)/;
 
 module.exports = (req, res, next)=> {
     // 静态资源文件不打印日志
-    if(ignore.test(req.url)) {
+    if (ignore.test(req.url)) {
         next();
         return;
     }

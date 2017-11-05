@@ -1,4 +1,4 @@
-const randomInt = require('../../utils/random-int');
+const randomInt = require('../../server/utils/random-int');
 const should = require('should');
 
 describe('utils/random-int', ()=> {
