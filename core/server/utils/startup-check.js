@@ -66,7 +66,7 @@ const checks = {
             logger.error('this project needs Node version %s, you are using version %s', packages.engines.node, process.versions.node);
             process.exit(exitCodes.NODE_VERSION_UNSUPPORTED);
         }
-        logger.info('node 版本检测正常.');
+        logger.info('node 版本检测正常...');
     },
     // 确保配置文件合法
     nodeEnv: function checkNodeEnvState() {
@@ -83,7 +83,7 @@ const checks = {
                 ' and is formatted properly.');
             process.exit(exitCodes.NODE_ENV_CONFIG_MISSING);
         }
-        logger.info('配置文件检测正常.');
+        logger.info('配置文件检测正常...');
     },
     // 确保依赖库完整
     packages: function checkPackages() {
@@ -102,7 +102,7 @@ const checks = {
         });
 
         if (!errors.length) {
-            logger.info('packages dependencies 依赖库检测正常.');
+            logger.info('packages dependencies 依赖库检测正常...');
             return;
         }
 
@@ -156,7 +156,7 @@ const checks = {
             logger.error('heck that the sqlite3 database file permissions allow read and write access.');
             process.exit(exitCodes.SQLITE_DB_NOT_WRITABLE);
         }
-        logger.info('sqlite数据库文件读写权限检测正常.');
+        logger.info('sqlite数据库文件读写权限检测正常...');
     }
 };
 
