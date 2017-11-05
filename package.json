@@ -15,8 +15,10 @@
     "node": "^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "dependencies": {
+    "assert": "^1.4.1",
     "bluebird": "^3.5.1",
     "body-parser": "^1.16.0",
+    "bookshelf": "^0.10.4",
     "colors": "^1.1.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",

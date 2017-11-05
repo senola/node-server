@@ -13,7 +13,7 @@ const models = [
  * exports all models
  */
 function init() {
-    models.forEach((name)=> {
+    models.forEach(name=> {
         __.extend(exports, require('./' + name));
     });
 }

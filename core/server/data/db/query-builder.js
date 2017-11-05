@@ -12,7 +12,7 @@ let queryBuilder;
 function initConfig(dbConfig) {
     const client = dbConfig.client;
 
-    if (clinent === 'sqlite3') {
+    if (client === 'sqlite3') {
         dbConfig.useNullAsDefault = dbConfig.useNullAsDefault || false;
     } else {
         // TODO other db like mysql, pg...

@@ -1,10 +1,10 @@
 let queryBuilder;
 
-Object.defineProperties(exports, 'knex', {
+Object.defineProperty(exports, 'knex', {
     enumerable: true,
     configurable: true,
     get: function get() {
-        queryBuilder = queryBuilder || require('./queryBuilder');
+        queryBuilder = queryBuilder || require('./query-builder');
         return queryBuilder;
     }
 });

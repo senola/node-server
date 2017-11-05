@@ -5,7 +5,7 @@
     "connection": {
       "filename": "content/data/ghost-dev.db"
     },
-    "debug": false
+    "debug": true
   },
   "paths": {
     "contentPath": "content/"

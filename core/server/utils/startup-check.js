@@ -71,11 +71,8 @@ const checks = {
     // 确保配置文件合法
     nodeEnv: function checkNodeEnvState() {
         // 检查配置是否合法
-        let configFile,
-            config;
-
-        configFile = require(configFilePath);
-        config = configFile[mode]; // mode[development/production]
+        const configFile = require(configFilePath);
+        const config = configFile[mode]; // mode[development/production]
 
         if (!config) {
             logger.error('Cannot find the configuration for the current NODE_ENV %s', mode);
@@ -119,9 +116,9 @@ const checks = {
             return;
         }
 
+        const appRoot = path.resolve(__dirname, '../');
         let configFile,
             config,
-            appRoot = path.resolve(__dirname, '../'),
             dbPath,
             fd;
 

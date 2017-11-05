@@ -362,7 +362,7 @@ module.exports = {
          */
 
         // require braces around arrow function bodies
-        'arrow-body-style': 'error',
+        'arrow-body-style': ["error", "always"],
 
         // require parentheses around arrow function arguments
         'arrow-parens': ['error', 'as-needed'],

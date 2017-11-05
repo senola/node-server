@@ -13,6 +13,10 @@ const logger = require('./core/server/utils/logger');
 const app = express();
 
 require('./core/server')();
+const db = require('./core/server/data/db');
+
+const result1 = db.knex.select('*').from('users');
+const result = db.knex('books').insert({title: 'Slaughterhouse Five'});
 
 app.use(cookieParser(config.cookieSecrect));
 // parse application/x-www-form-urlencoded
@@ -33,7 +37,7 @@ app.use('/static', express.static(staticDir));
 // 环境健康检查
 require('./core/server/utils/startup-check').check();
 
-const sqlite3 = require('sqlite3').verbose(); // verbose 开启sqlit3的debug模式
+// const sqlite3 = require('sqlite3').verbose(); // verbose 开启sqlit3的debug模式
 // const file = config.development.databasedbDir + "/test.db";
 //
 // if(!fs.existsSync(file)) {

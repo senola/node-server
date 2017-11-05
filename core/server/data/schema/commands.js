@@ -1,13 +1,17 @@
-const _ = require('lodash'),
-    Promise = require('bluebird'),
-    i18n = require('../../i18n'),
-    db = require('../db'),
-    schema = require('./schema'),
-    clients = require('./clients');
+const _ = require('lodash');
+const Promise = require('bluebird');
+const db = require('../db');
+const schema = require('./schema');
+const clients = require('./clients');
 
+/**
+ * @param tableName
+ * @param table
+ * @param columnName
+ */
 function addTableColumn(tableName, table, columnName) {
-    let column,
-        columnSpec = schema[tableName][columnName];
+    let column;
+    const columnSpec = schema[tableName][columnName]; // 列名
 
     // creation distinguishes between text with fieldtype, string with maxlength and all others
     if (columnSpec.type === 'text' && columnSpec.hasOwnProperty('fieldtype')) {
@@ -45,53 +49,91 @@ function addTableColumn(tableName, table, columnName) {
     }
 }
 
+/**
+ * @param tableName
+ * @param column
+ * @param transaction
+ * @returns {*}
+ */
 function addColumn(tableName, column, transaction) {
     return (transaction || db.knex).schema.table(tableName, table=> {
         addTableColumn(tableName, table, column);
     });
 }
 
+/**
+ * 删除列
+ * @param table
+ * @param column
+ * @param transaction
+ */
 function dropColumn(table, column, transaction) {
     return (transaction || db.knex).schema.table(table, table=> {
         table.dropColumn(column);
     });
 }
 
+/**
+ * @param table
+ * @param column
+ * @param transaction
+ * @returns {*}
+ */
 function addUnique(table, column, transaction) {
     return (transaction || db.knex).schema.table(table, table=> {
         table.unique(column);
     });
 }
 
+/**
+ * @param table
+ * @param column
+ * @param transaction
+ * @returns {*}
+ */
 function dropUnique(table, column, transaction) {
     return (transaction || db.knex).schema.table(table, table=> {
         table.dropUnique(column);
     });
 }
 
+
 /**
  * https://github.com/tgriesser/knex/issues/1303
  * createTableIfNotExists can throw error if indexes are already in place
+ * @param table
+ * @param transaction
  */
 function createTable(table, transaction) {
-    return (transaction || db.knex).schema.hasTable(table)
-        .then(exists=> {
-            if (exists) {
-                return;
-            }
+    return (transaction || db.knex).schema.hasTable(table).then(exists=> {
+        if (exists) {
+            return;
+        }
 
-            return (transaction || db.knex).schema.createTable(table, t=> {
-                const columnKeys = _.keys(schema[table]);
+        return (transaction || db.knex).schema.createTable(table, t=> {
+            const columnKeys = _.keys(schema[table]);
 
-                _.each(columnKeys, column=> addTableColumn(table, t, column));
+            _.each(columnKeys, column=> {
+                return addTableColumn(table, t, column);
             });
         });
+    });
 }
 
+/**
+ * 删除表
+ * @param table
+ * @param transaction
+ * @returns {*}
+ */
 function deleteTable(table, transaction) {
     return (transaction || db.knex).schema.dropTableIfExists(table);
 }
 
+/**
+ * @param transaction
+ * @returns {*}
+ */
 function getTables(transaction) {
     const client = (transaction || db.knex).client.config.client;
 
@@ -99,9 +141,15 @@ function getTables(transaction) {
         return clients[client].getTables(transaction);
     }
 
-    return Promise.reject(i18n.t('notices.data.utils.index.noSupportForDatabase', {client: client}));
+    return Promise.reject('notices.data.utils.index.noSupportForDatabase');
 }
 
+/**
+ *
+ * @param table
+ * @param transaction
+ * @returns {*}
+ */
 function getIndexes(table, transaction) {
     const client = (transaction || db.knex).client.config.client;
 
@@ -109,9 +157,14 @@ function getIndexes(table, transaction) {
         return clients[client].getIndexes(table, transaction);
     }
 
-    return Promise.reject(i18n.t('notices.data.utils.index.noSupportForDatabase', {client: client}));
+    return Promise.reject('notices.data.utils.index.noSupportForDatabase');
 }
 
+/**
+ * @param table
+ * @param transaction
+ * @returns {*}
+ */
 function getColumns(table, transaction) {
     const client = (transaction || db.knex).client.config.client;
 
@@ -119,26 +172,31 @@ function getColumns(table, transaction) {
         return clients[client].getColumns(table);
     }
 
-    return Promise.reject(i18n.t('notices.data.utils.index.noSupportForDatabase', {client: client}));
+    return Promise.reject('notices.data.utils.index.noSupportForDatabase');
 }
 
+/**
+ *
+ * @param transaction
+ * @returns {*}
+ */
 function checkTables(transaction) {
     const client = (transaction || db.knex).client.config.client;
-
     if (client === 'mysql') {
-        return clients[client].checkPostTable();
+        // TODO
+        // return clients[client].checkPostTable();
     }
 }
 
 module.exports = {
-    checkTables: checkTables,
-    createTable: createTable,
-    deleteTable: deleteTable,
-    getTables: getTables,
-    getIndexes: getIndexes,
-    addUnique: addUnique,
-    dropUnique: dropUnique,
-    addColumn: addColumn,
-    dropColumn: dropColumn,
-    getColumns: getColumns
+    checkTables,
+    createTable,
+    deleteTable,
+    getTables,
+    getIndexes,
+    addUnique,
+    dropUnique,
+    addColumn,
+    dropColumn,
+    getColumns
 };
