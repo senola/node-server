@@ -1,13 +1,13 @@
 {
-  "url": "http://localhost:9991",
   "database": {
-    "client": "sqlite3",
-    "connection": {
-      "filename": "content/data/ghost-dev.db"
+    "host": "localhost",
+    "dialect": "sqlite",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
     },
-    "debug": true
-  },
-  "paths": {
-    "contentPath": "content/"
+    "storage": "content/data/data-dev.db"
   }
 }

@@ -2,19 +2,17 @@ const schema = require('../schema').tables,
     _ = require('lodash'),
     validator = require('validator'),
     moment = require('moment-timezone'),
-    assert = require('assert'),
     Promise = require('bluebird'),
-    errors = require('../../errors'),
-    logger = require('../../utils/logger'),
-    settingsCache = require('../../settings/cache'),
-    utils = require('../../utils/url');
+    logger = require('../../utils/logger');
 
 /**
  *
  * @param input
  */
 function assertString(input) {
-    assert(typeof input === 'string', 'Validator js validates strings only');
+    if (typeof input !== 'string') {
+        logger.error('Validator js validates strings only');
+    }
 }
 
 /**

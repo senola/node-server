@@ -5,32 +5,32 @@ const _ = require('lodash'),
     _bookshelf = require('bookshelf'),
     moment = require('moment'),
     Promise = require('bluebird'),
-    ObjectId = require('bson-objectid'),
+    // ObjectId = require('bson-objectid'),
     config = require('../../config'),
     db = require('../../data/db'),
-    errors = require('../../errors'),
+    // errors = require('../../errors'),
     filters = require('../../filters'),
     schema = require('../../data/schema'),
     utils = require('../../utils'),
     validation = require('../../data/validation'),
-    plugins = require('../plugins');
+    plugins = require('../plugins'),
+    logger = require('../../utils/logger');
 
-let bookshelf,
-    proto;
 
 
 // 初始化一个Bookshelf实例 myBookshelf
-bookshelf = _bookshelf(db.knex);
+const bookshelf = _bookshelf(db.knex);
 
 // 加载Bookshelf的注册插件，避免循环依赖
 bookshelf.plugin('registry');
 
 // 缓存一个base model prototype实例
-proto = bookshelf.Model.prototype;
+const proto = bookshelf.Model.prototype;
 
 // 定义一个基类的Model供其他对象继承
 // 包含了一些方便的函数及静态属性
-bookshelf.Model = ghostBookshelf.Model.extend({
+// Model.extend([prototypeProperties], [classProperties])
+bookshelf.Model = bookshelf.Model.extend({
     // 时间戳
     hasTimestamps: true,
     permittedAttributes: function permittedAttributes() {
@@ -93,8 +93,7 @@ bookshelf.Model = ghostBookshelf.Model.extend({
         });
     },
     onValidate: function onValidate() {
-        // TODO validation
-        // return validation.validateSchema(this.tableName, this.toJSON());
+        return validation.validateSchema(this.tableName, this.toJSON());
     },
 
     onSaving: function onSaving(newObj) {
@@ -227,7 +226,7 @@ bookshelf.Model = ghostBookshelf.Model.extend({
      * no auto increment
      */
     setId: function setId() {
-        this.set('id', ObjectId.generate());
+        // this.set('id', ObjectId.generate());
     }
 }, {
     // ## Data Utility Functions
@@ -307,9 +306,10 @@ bookshelf.Model = ghostBookshelf.Model.extend({
 
                 // CASE: client sends `0000-00-00 00:00:00`
                 if (!dateMoment.isValid()) {
-                    throw new errors.ValidationError({
-                        message: i18n.t('errors.models.base.invalidDate', {key: key})
-                    });
+                    // throw new errors.ValidationError({
+                    //     message: i18n.t('errors.models.base.invalidDate', {key: key})
+                    // });
+                    logger.error('errors.models.base.invalidDate');
                 }
 
                 data[key] = dateMoment.toDate();
@@ -647,3 +647,6 @@ bookshelf.Model = ghostBookshelf.Model.extend({
         return result;
     }
 });
+
+// Export ghostBookshelf for use elsewhere
+module.exports = bookshelf;
