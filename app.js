@@ -10,13 +10,15 @@ const session = require('express-session'); // session
 const router = require('./core/server/router/router');
 const requestLog = require('./core/server/middleware/request-log'); // cookie解析中间件
 const logger = require('./core/server/utils/logger');
+
 const app = express();
 
 require('./core/server')();
-const db = require('./core/server/data/db');
 
-const result1 = db.knex.select('*').from('users');
-const result = db.knex('books').insert({title: 'Slaughterhouse Five'});
+const models = require('./core/server/models');
+models.user.findAll().then(user => {
+    logger.info('', user);
+});
 
 app.use(cookieParser(config.cookieSecrect));
 // parse application/x-www-form-urlencoded
@@ -33,34 +35,9 @@ const staticDir = path.join(__dirname, 'static');
 
 app.use('/static', express.static(staticDir));
 
-
 // 环境健康检查
 require('./core/server/utils/startup-check').check();
 
-// const sqlite3 = require('sqlite3').verbose(); // verbose 开启sqlit3的debug模式
-// const file = config.development.databasedbDir + "/test.db";
-//
-// if(!fs.existsSync(file)) {
-//     logger.data('create db file. %s', file);
-//     fs.openSync(file, 'w+');
-// }
-// // const db = new sqlite3.Database(':memory:');
-// const db = new sqlite3.Database(file);
-//
-// db.serialize(()=> {
-//     // db.run('CREATE TABLE lorem (info TEXT)');
-//     //
-//     // let stmt = db.prepare('INSERT INTO lorem VALUES (?)');
-//     // for (let i = 0; i < 10; i++) {
-//     //     stmt.run('Ipsum ' + i);
-//     // }
-//     // stmt.finalize();
-//
-//     db.each('SELECT rowid AS id, info FROM lorem', (err, row)=> {
-//         logger.info(row.id + ': ' + row.info);
-//     });
-// });
-// db.close();
 
 
 app.set('trust proxy', 1); // trust first proxy

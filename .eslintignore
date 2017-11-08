@@ -1,2 +1,2 @@
 node_modules
-core/server/data/schema/schema.js
+core/server/models/*.js

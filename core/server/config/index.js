@@ -38,7 +38,7 @@ _private.loadNconf = function loadNconf(options) {
     logger.data('当前系统配置:\n', nconf.get());
     logger.info('系统配置文件加载完毕...');
 
-    return nconf;
+    return nconf.get();
 };
 
 module.exports = _private.loadNconf();

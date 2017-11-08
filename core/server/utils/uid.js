@@ -1,19 +1,39 @@
-const getRandomInt = require('./random-int');
+/**
+ * 生成唯一ID
+ * @type {number}
+ */
+const pid = (typeof process === 'undefined' || typeof process.pid !== 'number' ? Math.floor(Math.random() * 100000) : process.pid) % 0xFFFF;
+const MACHINE_ID = parseInt(Math.random() * 0xFFFFFF, 10);
+let index = parseInt(Math.random() * 0xFFFFFF, 10);
 
 /**
- * 返回指定长度的唯一字符串
- * @param len
- * @returns {string}
+ *
+ * @param length
+ * @param n
+ * @returns {*}
  */
+function hex(length, n) {
+    n = n.toString(18);
+    return n.length === length ? n : '00000000'.substring(n.length, length) + n;
+}
 
-module.exports = function(len) {
-    const buf = [];
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charLen = chars.length;
+/**
+ *
+ * @returns {number}
+ */
+function next() {
+    return index = (index + 1) % 0xFFFFFF;
+}
 
-    for (let i = 0; i < len; i++) {
-        buf.push(chars[getRandomInt(0, charLen - 1)]);
+module.exports = function(time) {
+    if (typeof time !== 'number') {
+        time = Date.now() / 1000;
     }
 
-    return buf.join('');
+    // keep it in the ring!
+    time = parseInt(time, 10) % 0xFFFFFFFF;
+
+    // FFFFFFFF FFFFFF FFFF FFFFFF
+    return hex(8, time) + hex(6, MACHINE_ID) + hex(4, pid) + hex(6, next());
 };
+

@@ -1,1 +1,0 @@
-const bookshelf = require('./base');

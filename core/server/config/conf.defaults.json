@@ -6,9 +6,5 @@
   },
   "paths": {
     "contentPath": "content/"
-  },
-  "logging": {
-    "level": "info",
-    "transports": ["console"]
   }
 }

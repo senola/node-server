@@ -8,6 +8,9 @@
       "acquire": 30000,
       "idle": 10000
     },
-    "storage": "content/data/data-dev.db"
+    "storage": "content/data/data-dev.db",
+    "define": {
+      "timestamps": false
+    }
   }
 }

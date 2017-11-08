@@ -13,10 +13,9 @@
 const path = require('path');
 const moment = require('moment');
 const __ = require('lodash');
-const config = require('../../../config.default'); // 配置
 const {createLogger, format, transports} = require('winston'); // A logger for just about everything
 const {combine, printf} = format;
-
+const logDir = 'content/logs';
 /**
  *  默认配置（级别对应的颜色）
  */
@@ -49,7 +48,7 @@ const winstonConfig = {
         }
         return `[${moment(info.timestamp).format('YYYY-MM-DD HH:mm:ss')}] ${message} ${info.label === undefined ? '' : info.label}`;
     }),
-    errorFileName: path.join(config.errorLogDir + '/' + moment().format('YYYY-MM-DD') + '.log') // 日志文件绝对路径
+    errorFileName: path.join(logDir + '/' + moment().format('YYYY-MM-DD') + '.log') // 日志文件绝对路径
 };
 
 /**
