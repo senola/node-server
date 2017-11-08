@@ -7,10 +7,13 @@ const Sequelize = require('sequelize');
 const config = require('../config');
 const logger = require('../utils/logger');
 
+const db = {};
+
 // 实例化sequelize
+db.Op = Sequelize.Op; // 使用symbol操作符，防止注入
 const sequelize = new Sequelize(config.database);
 
-const db = {};
+
 
 fs.readdirSync(__dirname).filter(file=> {
     // 排除index.js

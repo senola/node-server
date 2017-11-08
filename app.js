@@ -1,6 +1,8 @@
 /**
  * node-server
  */
+// top of file
+delete process.env["DEBUG_FD"];
 const config = require('./config.default');
 const express = require('express');
 const path = require('path');
@@ -16,9 +18,12 @@ const app = express();
 require('./core/server')();
 
 const models = require('./core/server/models');
-models.user.findAll().then(user => {
-    logger.info('', user);
-});
+
+// 使用symbol操作符，防止注入
+const Op = models.Op;
+// models.user.findAll().then(user => {
+//     logger.info('', user);
+// });
 
 app.use(cookieParser(config.cookieSecrect));
 // parse application/x-www-form-urlencoded
