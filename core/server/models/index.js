@@ -10,9 +10,8 @@ const logger = require('../utils/logger');
 const db = {};
 
 // 实例化sequelize
-db.Op = Sequelize.Op; // 使用symbol操作符，防止注入
+config.database.operatorsAliases = Sequelize.Op; // 使用symbol操作符，防止注入
 const sequelize = new Sequelize(config.database);
-
 
 
 fs.readdirSync(__dirname).filter(file=> {

@@ -3,7 +3,7 @@
  */
 // top of file
 delete process.env["DEBUG_FD"];
-const config = require('./config.default');
+const config = require('./core/server/config');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser'); // 请求body解析中间件
@@ -47,7 +47,7 @@ require('./core/server/utils/startup-check').check();
 
 app.set('trust proxy', 1); // trust first proxy
 app.use(session({
-    secret: config.development.cookieSecrect,
+    secret: config.cookieSecrect,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -59,6 +59,6 @@ app.use(session({
 app.use('/', router); // router
 
 // 默认是IPv6 address (::) 需要ip4的话，需要加上 "0.0.0.0"
-app.listen(config.port, '0.0.0.0', ()=> {
-    logger.warn('please visit http://%s:%s in the browser', config.host, config.port);
+app.listen(config.server.port, '0.0.0.0', ()=> {
+    logger.info('please visit http://%s:%s in the browser', config.server.host, config.server.port);
 });

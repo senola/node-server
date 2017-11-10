@@ -8,7 +8,7 @@ const os = require('os');
 const fs = require('fs');
 const mode = process.env.NODE_ENV === undefined ? 'development' : process.env.NODE_ENV;
 const appRoot = path.resolve(__dirname, '../../../');
-const configFilePath = process.env.CONFIG || path.join(appRoot, 'config.default.js');
+const config = require('../config');
 const logger = require('./logger');
 
 
@@ -19,7 +19,8 @@ const exitCodes = {
     CONTENT_PATH_NOT_ACCESSIBLE: 234, // 目录不可访问
     CONTENT_PATH_NOT_WRITABLE: 235, // 不可写
     SQLITE_DB_NOT_WRITABLE: 236, // sqlite文件不可写
-    BUILT_FILES_DO_NOT_EXIST: 237
+    BUILT_FILES_DO_NOT_EXIST: 237,
+    DATABASE_NOT_UNSUPPORTED: 238
 };
 
 const checks = {
@@ -71,11 +72,8 @@ const checks = {
     // 确保配置文件合法
     nodeEnv: function checkNodeEnvState() {
         // 检查配置是否合法
-        const configFile = require(configFilePath);
-        const config = configFile[mode]; // mode[development/production]
-
         if (!config) {
-            logger.error('Cannot find the configuration for the current NODE_ENV %s', mode);
+            logger.error('Cannot find the configuration for the current NODE_ENV %s', process.env.NODE_ENV);
             logger.error('Ensure your config.default.js has a section for the current NODE_ENV value' +
                 ' and is formatted properly.');
             process.exit(exitCodes.NODE_ENV_CONFIG_MISSING);
@@ -84,10 +82,6 @@ const checks = {
     },
     // 确保依赖库完整
     packages: function checkPackages() {
-        if (mode !== 'production' && mode !== 'development') {
-            return;
-        }
-
         let errors = [];
 
         Object.keys(packages.dependencies).forEach(p=> {
@@ -115,33 +109,17 @@ const checks = {
         if (mode !== 'production' && mode !== 'development') {
             return;
         }
+        let fd;
 
-        const appRoot = path.resolve(__dirname, '../');
-        let configFile,
-            config,
-            dbPath,
-            fd;
-
-        try {
-            configFile = require(configFilePath);
-            config = configFile[mode];
-
-            // 检查是否使用的是 sqlite3
-            if (config && config.database && config.database.client !== 'sqlite3') {
-                return;
-            }
-
-            if (config && config.database && config.database.connection) {
-                dbPath = config.database.connection.filename;
-            }
-        } catch (e) {
-            // 如果默认配置不存在则启用默认db文件
-            dbPath = path.join(appRoot, 'data', mode === 'production' ? 'data.db' : 'data-dev.db');
+        // 检查是否使用的是 sqlite3
+        if (config.database && config.database.dialect !== 'sqlite') {
+            logger.error('暂时只支持sqlite3数据库');
+            process.exit(exitCodes.DATABASE_NOT_UNSUPPORTED);
         }
 
         // Check for read/write access on sqlite db file
         try {
-            fd = fs.openSync(dbPath, 'r+');
+            fd = fs.openSync(config.database.storage, 'r+');
             fs.closeSync(fd);
         } catch (e) {
             // Database file not existing is not an error as sqlite will create it.

@@ -30,6 +30,7 @@ const winstonConfig = {
         silly: 6 // silly
     },
     colors: {
+        error: 'red',
         debug: 'blue',
         warn: 'yellow',
         data: 'grey',

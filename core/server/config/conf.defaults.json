@@ -6,5 +6,6 @@
   },
   "paths": {
     "contentPath": "content/"
-  }
+  },
+  "cookieSecrect": "WaStTHbsU&s"
 }
