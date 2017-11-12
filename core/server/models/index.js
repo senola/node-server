@@ -22,9 +22,9 @@ fs.readdirSync(__dirname).filter(file=> {
 
     // 如果表未创建则先创建table
     model.sync({force: false}).then(()=> {
-        logger.data('table:%s created success...', model.name);
+        logger.data('table:%s created success...', model.tableName);
     }).catch(error=> {
-        logger.error('table:%s created failure...', model.name, error)
+        logger.error('table:%s created failure...', model.tableName, error)
     });
 
     db[model.name] = model;

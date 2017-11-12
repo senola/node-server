@@ -1,11 +1,11 @@
-const uid = require('./uid'),
+const uuid = require('./uuid'),
     getSafeString = require('./safe-string'),
     getRandomInt = require('./random-int'),
     getRandomFloat = require('./random-float'),
     logger = require('./logger');
 
 module.exports = {
-    uid,
+    uuid,
     getSafeString,
     getRandomInt,
     getRandomFloat,
