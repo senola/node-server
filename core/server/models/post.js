@@ -5,7 +5,7 @@
  * @returns {*}
  */
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('t_post', {
+    return sequelize.define('Post', {
         id: {type:DataTypes.INTEGER, allowNull: false, primaryKey: true},
         uuid: {type:DataTypes.STRING, allowNull: false},
         name: {type:DataTypes.STRING, allowNull: false}

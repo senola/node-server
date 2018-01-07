@@ -1,14 +1,13 @@
 {
   "database": {
-    "host": "localhost",
-    "dialect": "sqlite",
+    "host": "",
+    "dialect": "mysql",
     "pool": {
       "max": 5,
       "min": 0,
       "acquire": 30000,
       "idle": 10000
     },
-    "storage": "content/data/data-dev.db",
     "define": {
       "timestamps": false
     }

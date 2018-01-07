@@ -53,6 +53,9 @@ app.use(session({
 app.use('/', router); // router
 
 // 默认是IPv6 address (::) 需要ip4的话，需要加上 "0.0.0.0"
-app.listen(config.server.port, '0.0.0.0', ()=> {
-    logger.info('please visit http://%s:%s in the browser', config.server.host, config.server.port);
-});
+setTimeout(function(){
+    app.listen(config.server.port, '0.0.0.0', ()=> {
+        logger.info('please visit http://%s:%s in the browser', config.server.host, config.server.port);
+    });
+}, 200);
+

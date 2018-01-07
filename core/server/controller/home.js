@@ -8,7 +8,7 @@ const moment = require('moment');
 
 const home = function(req, res, next) {
     res.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
-    models.user.findAll().then(user=> {
+    models.Users.findAll().then(user=> {
         res.write('<p>session: ' + req.session.id + '</p>');
         res.write('<p>查询用户user: ' + JSON.stringify(user) + '</p>');
         res.end();

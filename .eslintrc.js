@@ -274,7 +274,7 @@ module.exports = {
         'no-new-object': 'error',
 
         // disallow trailing whitespace at the end of lines
-        'no-trailing-spaces': 'error',
+        'no-trailing-spaces': 'off',
 
         // disallow ternary operators when simpler alternatives exist
         'no-unneeded-ternary': 'error',

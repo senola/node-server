@@ -29,7 +29,7 @@ const checks = {
         this.nodeVersion();
         this.nodeEnv();
         this.packages();
-        this.sqlite();
+        // this.sqlite();
     },
     // 系统信息检测
     systemInfo() {
