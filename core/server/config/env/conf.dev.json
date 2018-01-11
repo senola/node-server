@@ -1,6 +1,6 @@
 {
   "database": {
-    "host": "39.108.4.156",
+    "host": "",
     "dialect": "mysql",
     "pool": {
       "max": 5,

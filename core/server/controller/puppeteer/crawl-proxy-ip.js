@@ -1,6 +1,5 @@
 /**
- * crawl biquge novels
- * @author 潭风
+ * crawl http://www.xicidaili.com proxy
  * @time 2018-01-07
  */
 const puppeteer = require('puppeteer');
@@ -14,6 +13,7 @@ const crawlProxyIp = async function() {
     handleBrowserEvent(browser);
     const page = await browser.newPage();
 
+    handlePageEvent(page);
     // 设置视口大小
     await page.setViewport({
         width: 1500,
@@ -32,7 +32,7 @@ const crawlProxyIp = async function() {
         });
         console.log('> 当前爬取的url： ' + await page.url());
 
-        handlePageEvent(page);
+
 
         // 抓取IP列表
         let IpList = await page.evaluate(()=> {
@@ -61,8 +61,6 @@ const crawlProxyIp = async function() {
             const isOK = await proxyCheck(IpList[i]);
             if(isOK) {
                 validIpList.push(IpList[i]);
-                console.log('【' + IpList[i].serverAddress + ' '+ IpList[i].ipAddress + ":" + IpList[i].port + '】代理有效。');
-
                 // 数据持久化
                 await Models.ProxyIp.findOrCreate({
                     where: {

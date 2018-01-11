@@ -5,7 +5,8 @@
 
 const crawlBiQuGe = require('./crawl-biquge');
 const crawlProxyIp = require('./crawl-proxy-ip');
-const proxyCheck = require('../../utils/proxyCheck');
+const goubanjia = require('./crawl-goubanjia');
+const { proxyCheck, checkExistIp } = require('../../utils/proxyCheck');
 
 
 const init = async function(req, res, next) {
@@ -14,11 +15,14 @@ const init = async function(req, res, next) {
 
     // crawlBiQuGe();
     // console.log('=====> ' + await proxyCheck({
-    //     ipAddress: '87.250.221.3',
-    //     port: 8080,
-    //     serverAddress: '广西壮族自治区百色市 联通'
+    //     ipAddress: req.query.ip,
+    //     port: req.query.port,
+    //     serverAddress: 'other'
     // }));
-    crawlProxyIp();
+    // crawlProxyIp();
+    // goubanjia();
+    checkExistIp();
+
     res.end();
     next();
 };
