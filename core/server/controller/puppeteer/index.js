@@ -19,9 +19,9 @@ const init = async function(req, res, next) {
     //     port: req.query.port,
     //     serverAddress: 'other'
     // }));
-    // crawlProxyIp();
-    // goubanjia();
-    checkExistIp();
+    crawlProxyIp();
+    goubanjia();
+    // checkExistIp();
 
     res.end();
     next();

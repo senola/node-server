@@ -9,7 +9,7 @@ const proxyCheck = require('../../utils/proxyCheck');
 
 const crawlGouBanjia = async function () {
 
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({headless: true});
     handleBrowserEvent(browser);
     const page = await browser.newPage();
 
