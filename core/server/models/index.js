@@ -12,7 +12,7 @@ const db = {};
 // 实例化sequelize
 config.database.operatorsAliases = Sequelize.Op; // 使用symbol操作符，防止注入
 //const sequelize = new Sequelize(config.database);
-const sequelize = new Sequelize('test', 'root', '@Twindyorg6!.#', config.database);
+const sequelize = new Sequelize('test', '', '', config.database);
 
 
 /**
