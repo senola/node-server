@@ -37,7 +37,7 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport-oauth": "^1.0.0",
-    "puppeteer": "^0.13.0",
+    "puppeteer": "^5.2.1",
     "restify": "^4.3.0",
     "semver": "^5.4.1",
     "sequelize": "^5.8.9",
